@@ -35,4 +35,4 @@ build/
 #### aplication properties
 .env
 application.properties
-
+docker-compose.yml
