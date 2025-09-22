@@ -17,8 +17,10 @@ import br.bruno_pablo.imc.Dto.CriarClienteDto;
 import br.bruno_pablo.imc.Dto.CriarOuListarFuncionarioDto;
 import br.bruno_pablo.imc.Dto.ListarClienteResponse;
 import br.bruno_pablo.imc.Dto.ListarFuncionarioResponse;
+import br.bruno_pablo.imc.Dto.InformacoesIniciaisImcDto;
 import br.bruno_pablo.imc.service.ClienteService;
 import br.bruno_pablo.imc.service.FuncionarioService;
+import br.bruno_pablo.imc.service.InformacoesImcService;
 
 @RestController
 @RequestMapping("/v1")
@@ -28,9 +30,13 @@ public class ImcController {
 
     private ClienteService clienteService;
 
-    public ImcController(FuncionarioService funcionarioService, ClienteService clienteService) {
+    private InformacoesImcService informacoesImcService;
+
+    public ImcController(FuncionarioService funcionarioService, ClienteService clienteService,
+            InformacoesImcService informacoesImcService) {
         this.funcionarioService = funcionarioService;
         this.clienteService = clienteService;
+        this.informacoesImcService = informacoesImcService;
     }
 
     @PostMapping("/criar_funcionario")
@@ -82,10 +88,21 @@ public class ImcController {
 
     @GetMapping("/listar_cliente/{idCliente}")
     public ResponseEntity<ListarClienteResponse> listarClientePorId(@PathVariable String idCliente) {
-        
+
         var cliente = clienteService.listarClientePorId(idCliente);
 
         return ResponseEntity.ok(cliente);
+
+    }
+
+    @PostMapping("/inserirInformacoesImc/{idCliente}")
+    public ResponseEntity<String> inserirInformacoesImcCliente(@PathVariable String idCliente,
+            @RequestBody InformacoesIniciaisImcDto dadosIniciaisImc) {
+
+        String nomeCliente = informacoesImcService.inserirInformacoesImcCliente(idCliente, dadosIniciaisImc);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                "Informacoes de Imc Inseridas Com Sucesso do Usuário " + nomeCliente);
 
     }
 }
