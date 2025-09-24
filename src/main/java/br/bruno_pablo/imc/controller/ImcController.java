@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.bruno_pablo.imc.Dto.ImcResponse;
 import br.bruno_pablo.imc.Dto.CriarClienteDto;
 import br.bruno_pablo.imc.Dto.CriarOuListarFuncionarioDto;
 import br.bruno_pablo.imc.Dto.ListarClienteResponse;
@@ -59,7 +60,7 @@ public class ImcController {
 
     }
 
-    @GetMapping("/listar_funcionario/{funcionarioId}")
+    @GetMapping("/listar_funcionario/{funcionarioId}") // END POINT AGREGADOR BUSCA POR FUNCIONARIO BY ID
     public ResponseEntity<ListarFuncionarioResponse> listarFuncionarioPorId(@PathVariable String funcionarioId) {
 
         var funcionario = funcionarioService.listarFuncionarioPorId(funcionarioId);
@@ -69,7 +70,8 @@ public class ImcController {
     }
 
     @GetMapping("/listar_funcionarios")
-    public ResponseEntity<List<ListarFuncionarioResponse>> listarFuncionarios() {
+    public ResponseEntity<List<ListarFuncionarioResponse>> listarFuncionarios() {// END POINT AGREGADOR BUSCA POR TODOS
+                                                                                 // OS FUNCIONARIOS
 
         var funcionarios = funcionarioService.listarFuncionarios();
 
@@ -86,7 +88,7 @@ public class ImcController {
 
     }
 
-    @GetMapping("/listar_cliente/{idCliente}")
+    @GetMapping("/listar_cliente/{idCliente}") // END POINT AGREGADOR BUSCA POR CLIENTE BY ID
     public ResponseEntity<ListarClienteResponse> listarClientePorId(@PathVariable String idCliente) {
 
         var cliente = clienteService.listarClientePorId(idCliente);
@@ -105,4 +107,21 @@ public class ImcController {
                 "Informacoes de Imc Inseridas Com Sucesso do Usuário " + nomeCliente);
 
     }
+
+    @GetMapping("/listar_informacoes_imc/{idCliente}")
+    public ResponseEntity<ImcResponse> listarInformacoesClienteImc(@PathVariable String idCliente) {
+
+        var clienteImcInfo = informacoesImcService.listarInformacoesImcClienteId(idCliente);
+
+        return ResponseEntity.ok(clienteImcInfo);
+    }
+
+    @GetMapping("/listar_imcs")
+    public ResponseEntity<List<ImcResponse>> listarImcs() {// END POINT AGREGADOR BUSCA POR TODOS OS FUNCIONARIOS
+        
+        var imcsResponse = informacoesImcService.listarTodosImcs();
+
+        return ResponseEntity.ok(imcsResponse);
+    }
+
 }

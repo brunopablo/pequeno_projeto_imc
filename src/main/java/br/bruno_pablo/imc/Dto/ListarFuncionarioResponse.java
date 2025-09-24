@@ -5,6 +5,6 @@ import java.util.List;
 
 public record ListarFuncionarioResponse(
         String nome_funcionario,
-        List<ListarClientesResponse> dados_clientes) {
+        List<ListarClienteResponse> dados_clientes) {
 
 }
