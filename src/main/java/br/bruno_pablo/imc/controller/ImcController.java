@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.bruno_pablo.imc.Dto.CalcularImcDto;
+import br.bruno_pablo.imc.Dto.CalcularImcResponse;
 import br.bruno_pablo.imc.Dto.ImcResponse;
 import br.bruno_pablo.imc.Dto.CriarClienteDto;
 import br.bruno_pablo.imc.Dto.CriarOuListarFuncionarioDto;
@@ -38,6 +40,15 @@ public class ImcController {
         this.funcionarioService = funcionarioService;
         this.clienteService = clienteService;
         this.informacoesImcService = informacoesImcService;
+    }
+
+    @PostMapping("/calcular_imc")
+    public ResponseEntity<CalcularImcResponse> calcularImc(@RequestBody CalcularImcDto dadosCliente) {
+
+        var classificacaoImcResponse = informacoesImcService.calcularImc(dadosCliente);
+
+        return ResponseEntity.ok(classificacaoImcResponse);
+
     }
 
     @PostMapping("/criar_funcionario")
@@ -118,7 +129,7 @@ public class ImcController {
 
     @GetMapping("/listar_imcs")
     public ResponseEntity<List<ImcResponse>> listarImcs() {// END POINT AGREGADOR BUSCA POR TODOS OS FUNCIONARIOS
-        
+
         var imcsResponse = informacoesImcService.listarTodosImcs();
 
         return ResponseEntity.ok(imcsResponse);

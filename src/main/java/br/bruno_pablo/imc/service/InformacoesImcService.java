@@ -7,10 +7,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.bruno_pablo.imc.Dto.CalcularImcDto;
+import br.bruno_pablo.imc.Dto.CalcularImcResponse;
 import br.bruno_pablo.imc.Dto.ImcResponse;
 import br.bruno_pablo.imc.Dto.InformacoesCompletasParaCalcularImcDto;
 import br.bruno_pablo.imc.Dto.InformacoesIniciaisImcDto;
-import br.bruno_pablo.imc.Dto.ListarFuncionarioResponse;
 import br.bruno_pablo.imc.Dto.ListarInformacoesImcResponse;
 import br.bruno_pablo.imc.entity.InformacoesImc;
 import br.bruno_pablo.imc.repository.ClienteRepository;
@@ -83,12 +84,11 @@ public class InformacoesImcService {
                 List<ImcResponse> imcResponse = imcsEntidade.stream().map(
                                 imcResponseObj -> {
                                         List<ListarInformacoesImcResponse> listaInformacoesImc = new ArrayList<>();
-                                        listaInformacoesImc.add( new ListarInformacoesImcResponse(
+                                        listaInformacoesImc.add(new ListarInformacoesImcResponse(
                                                         imcResponseObj.getDescricao(),
                                                         imcResponseObj.getData(),
                                                         imcResponseObj.getPeso(),
-                                                        imcResponseObj.getClassificacao())
-                                        );
+                                                        imcResponseObj.getClassificacao()));
 
                                         return new ImcResponse(imcResponseObj.getCliente().getNome_cliente(),
                                                         listaInformacoesImc);
@@ -96,6 +96,11 @@ public class InformacoesImcService {
 
                 return imcResponse;
 
+        }
+
+        public CalcularImcResponse calcularImc(CalcularImcDto dadosImc) {
+
+                return calcularImcUtils.calcularImc(dadosImc);
         }
 
 }
