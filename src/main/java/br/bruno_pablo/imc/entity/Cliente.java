@@ -3,6 +3,7 @@ package br.bruno_pablo.imc.entity;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +33,7 @@ public class Cliente {
     @JoinColumn(name = "funcionario_id")
     private Funcionario funcionario;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade=CascadeType.REMOVE)
     private List<InformacoesImc> informacoesImc;
 
     public Cliente() {

@@ -3,6 +3,7 @@ package br.bruno_pablo.imc.entity;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,7 @@ public class Funcionario {
 
     private String nome;
 
-    @OneToMany(mappedBy = "funcionario")
+    @OneToMany(mappedBy = "funcionario", cascade=CascadeType.REMOVE)
     private List<Cliente> cliente;
 
     public Funcionario() {

@@ -6,13 +6,16 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.bruno_pablo.imc.Dto.AtualizarFuncionarioDto;
 import br.bruno_pablo.imc.Dto.CalcularImcDto;
 import br.bruno_pablo.imc.Dto.CalcularImcResponse;
 import br.bruno_pablo.imc.Dto.CriarClienteDto;
@@ -64,7 +67,7 @@ public class FuncionariosController {
 
     }
 
-    @GetMapping("{funcionarioId}") // END POINT ESPECÍFICO BUSCA POR FUNCIONARIO BY ID
+    @GetMapping("{funcionarioId}")
     public ResponseEntity<ListarFuncionarioResponse> listarFuncionarioPorId(@PathVariable String funcionarioId) {
 
         var funcionario = funcionarioService.listarFuncionarioPorId(funcionarioId);
@@ -74,12 +77,41 @@ public class FuncionariosController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ListarFuncionarioResponse>> listarFuncionarios() {// END POINT AGREGADOR BUSCA POR TODOS
-                                                                                 // OS FUNCIONARIOS
+    public ResponseEntity<List<ListarFuncionarioResponse>> listarFuncionarios() {
 
         var funcionarios = funcionarioService.listarFuncionarios();
 
         return ResponseEntity.ok(funcionarios);
 
+    }
+
+    @PutMapping("/{idFuncionario}")
+    public ResponseEntity<String> atualizarFuncionario(@PathVariable String idFuncionario,
+            @RequestBody AtualizarFuncionarioDto dadosFuncionario) {
+
+        boolean funcionarioEncontrado = funcionarioService.atualizarFuncionario(idFuncionario, dadosFuncionario);
+
+        if (funcionarioEncontrado) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    "Funcionario Atualizado");
+        }
+
+        // return ResponseEntity.badRequest().build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                "Funcionario Não Cadastrado");
+
+    }
+
+    @DeleteMapping("/{idFuncionario}")
+    public ResponseEntity<String> deletarFuncionarioPorId(@PathVariable String idFuncionario) {
+
+        boolean funcionarioEncontrado = funcionarioService.deletarFuncionario(idFuncionario);
+
+        if (funcionarioEncontrado) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                "Funcionario Não Cadastrado");
     }
 }

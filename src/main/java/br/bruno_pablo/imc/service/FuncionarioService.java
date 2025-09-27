@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.bruno_pablo.imc.Dto.AtualizarFuncionarioDto;
 import br.bruno_pablo.imc.Dto.CriarClienteDto;
 import br.bruno_pablo.imc.Dto.CriarOuListarFuncionarioDto;
 import br.bruno_pablo.imc.Dto.ListarClienteResponse;
@@ -72,11 +73,9 @@ public class FuncionarioService {
                                                                                 i.getDescricao(),
                                                                                 i.getData(),
                                                                                 i.getPeso(),
-                                                                                i.getClassificacao()
-                                                                )
-                                                ).toList()
-                                )
-                ).toList();
+                                                                                i.getClassificacao()))
+                                                                .toList()))
+                                .toList();
 
                 return new ListarFuncionarioResponse(
                                 funcionarioEntidade.getNome(),
@@ -102,13 +101,47 @@ public class FuncionarioService {
                                                                                                                 i.getDescricao(),
                                                                                                                 i.getData(),
                                                                                                                 i.getPeso(),
-                                                                                                                i.getClassificacao())
-                                                                                ).toList()
-                                                                )
-                                                ).toList()
-                                )
-                        ).toList();
+                                                                                                                i.getClassificacao()))
+                                                                                                .toList()))
+                                                                .toList()))
+                                .toList();
 
         }
 
+        public boolean atualizarFuncionario(String idFuncionario, AtualizarFuncionarioDto dadosFuncionario) {
+
+                if (checarCadastroNoBd(idFuncionario)) {
+                        var funcionarioEntidade = funcionarioRepository.findById(UUID.fromString(idFuncionario)).get();
+
+                        if (!dadosFuncionario.nome().equalsIgnoreCase(funcionarioEntidade.getNome())) {
+                                funcionarioEntidade.setNome(dadosFuncionario.nome());
+                        } else {
+                                return true;
+                        }
+
+                        funcionarioRepository.save(funcionarioEntidade);
+
+                        return true;
+                }
+
+                return false;
+        }
+
+        public boolean deletarFuncionario(String idFuncionario) {
+
+                if (checarCadastroNoBd(idFuncionario)) {
+                        funcionarioRepository.deleteById(UUID.fromString(idFuncionario));
+
+                        return true;
+                }
+
+                return false;
+
+        }
+
+        public boolean checarCadastroNoBd(String id) {
+
+                return funcionarioRepository.existsById(UUID.fromString(id));
+
+        }
 }
