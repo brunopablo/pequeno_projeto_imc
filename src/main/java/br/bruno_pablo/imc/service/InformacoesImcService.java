@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 
 import br.bruno_pablo.imc.Dto.CalcularImcDto;
 import br.bruno_pablo.imc.Dto.CalcularImcResponse;
-import br.bruno_pablo.imc.Dto.ImcResponse;
+import br.bruno_pablo.imc.Dto.ListarTodosImcsResponse;
 import br.bruno_pablo.imc.Dto.InformacoesCompletasParaCalcularImcDto;
 import br.bruno_pablo.imc.Dto.InformacoesIniciaisImcDto;
 import br.bruno_pablo.imc.Dto.ListarInformacoesImcResponse;
+import br.bruno_pablo.imc.Dto.ListarUnicoImcResponse;
 import br.bruno_pablo.imc.entity.InformacoesImc;
 import br.bruno_pablo.imc.repository.ClienteRepository;
 import br.bruno_pablo.imc.repository.InformacoesImcRepository;
@@ -59,7 +60,7 @@ public class InformacoesImcService {
                 return clienteEntidade.getNome_cliente();
         }
 
-        public ImcResponse listarInformacoesImcClienteId(String idCliente) {
+        public ListarTodosImcsResponse listarInformacoesImcClienteId(String idCliente) {
 
                 var clienteEntidade = clienteRepository.findById(UUID.fromString(idCliente)).get();
 
@@ -71,18 +72,18 @@ public class InformacoesImcService {
                                                 infImcResponse.getClassificacao()))
                                 .toList();
 
-                return new ImcResponse(
+                return new ListarTodosImcsResponse(
                                 clienteEntidade.getNome_cliente(),
                                 informacoesImc);
 
         }
 
-        public List<ImcResponse> listarTodosImcs() {
+        public List<ListarTodosImcsResponse> listarTodosImcs() {
 
                 var imcsEntidade = informacoesImcRepository.findAll();
 
-                List<ImcResponse> imcResponse = imcsEntidade.stream().map(
-                                imcResponseObj -> {
+                List<ListarTodosImcsResponse> imcResponse = imcsEntidade.stream().map(
+                        imcResponseObj -> {
                                         List<ListarInformacoesImcResponse> listaInformacoesImc = new ArrayList<>();
                                         listaInformacoesImc.add(new ListarInformacoesImcResponse(
                                                         imcResponseObj.getDescricao(),
@@ -90,7 +91,7 @@ public class InformacoesImcService {
                                                         imcResponseObj.getPeso(),
                                                         imcResponseObj.getClassificacao()));
 
-                                        return new ImcResponse(imcResponseObj.getCliente().getNome_cliente(),
+                                        return new ListarTodosImcsResponse(imcResponseObj.getCliente().getNome_cliente(),
                                                         listaInformacoesImc);
                                 }).toList();
 
@@ -98,6 +99,23 @@ public class InformacoesImcService {
 
         }
 
+        public ListarUnicoImcResponse listarImcPorId(String idImc) {
+                
+                var imcResponse = informacoesImcRepository.findById(Integer.valueOf(idImc)).get();
+
+                return new ListarUnicoImcResponse(
+                        imcResponse.getCliente().getNome_cliente(),
+                                new ListarInformacoesImcResponse(
+                                        imcResponse.getDescricao(),
+                                        imcResponse.getData(),
+                                        imcResponse.getPeso(),
+                                        imcResponse.getClassificacao()
+                        )
+                );
+        }
+        
+        
+        
         public CalcularImcResponse calcularImc(CalcularImcDto dadosImc) {
 
                 return calcularImcUtils.calcularImc(dadosImc);
