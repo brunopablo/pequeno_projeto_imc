@@ -29,4 +29,5 @@ build/
 #### aplication properties
 .env
 application.properties
+application modelo.properties
 docker-compose.yml
