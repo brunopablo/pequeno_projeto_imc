@@ -1,0 +1,18 @@
+#prestar atenção na inserção das informações
+services:
+  postgres:
+    image: postgres:16 imagem com a versao do PostgreSQL
+    container_name: nome_do_container_docker
+    environment:
+      POSTGRES_USER: usuario de acesso
+      POSTGRES_PASSWORD: senha de acesso
+      POSTGRES_DB: nome da database no bd
+    ports:
+      # - "defina_porta_aqui:defina_porta_aqui" porta externa e interna
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # command: ["postgres", "-p", "colocar_numero_porta_bd_aqui"]
+    # 
+  
+volumes:
+  pgdata:
