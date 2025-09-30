@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import br.bruno_pablo.imc.Dto.AtualizarFuncionarioDto;
-import br.bruno_pablo.imc.Dto.CriarClienteDto;
+import br.bruno_pablo.imc.Dto.CriarOuAtualizarClienteDto;
 import br.bruno_pablo.imc.Dto.CriarOuListarFuncionarioDto;
 import br.bruno_pablo.imc.Dto.ListarClienteResponse;
 import br.bruno_pablo.imc.Dto.ListarFuncionarioResponse;
@@ -28,7 +28,7 @@ public class FuncionarioService {
                 this.clienteRepository = clienteRepository;
         }
 
-        public void criarFuncionario(CriarOuListarFuncionarioDto dadosFuncionario) {
+        public void cadastrarFuncionario(CriarOuListarFuncionarioDto dadosFuncionario) {
 
                 var funcionarioEntidade = new Funcionario(
                                 null,
@@ -39,7 +39,7 @@ public class FuncionarioService {
 
         }
 
-        public void criarCliente(String funcionarioId, CriarClienteDto dadosCliente) {
+        public void cadastrarCliente(String funcionarioId, CriarOuAtualizarClienteDto dadosCliente) {
                 var funcionarioEntidade = funcionarioRepository.findById(UUID.fromString(funcionarioId))
                                 .orElseThrow(() -> new RuntimeException("Funcionario nao encontrado"));
 

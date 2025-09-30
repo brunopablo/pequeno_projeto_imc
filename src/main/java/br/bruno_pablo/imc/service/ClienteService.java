@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.bruno_pablo.imc.Dto.CriarOuAtualizarClienteDto;
 import br.bruno_pablo.imc.Dto.ListarClienteResponse;
 import br.bruno_pablo.imc.Dto.ListarInformacoesImcResponse;
 import br.bruno_pablo.imc.repository.ClienteRepository;
@@ -56,6 +57,49 @@ public class ClienteService {
                                 .toList()))
                 .toList();
 
+    }
+
+    public boolean atualizarCliente(UUID idCliente, CriarOuAtualizarClienteDto novosDadosCliente) {
+
+        if (checarClienteExiste(idCliente)) {
+            var clienteEntidade = clienteRepository.findById(idCliente).get();
+
+            if (!clienteEntidade.getNome_cliente().equals(novosDadosCliente.nome_cliente()) && novosDadosCliente.nome_cliente() != null) {
+                clienteEntidade.setNome_cliente(novosDadosCliente.nome_cliente());
+            }
+
+            if (clienteEntidade.getAltura_cliente() != novosDadosCliente.altura_cliente()
+                    && novosDadosCliente.altura_cliente() != null) {
+                clienteEntidade.setAltura_cliente(novosDadosCliente.altura_cliente());
+            }
+
+            if (clienteEntidade.getIdade_cliente() != novosDadosCliente.idade_cliente()
+                    && novosDadosCliente.idade_cliente() != null) {
+                clienteEntidade.setIdade_cliente(novosDadosCliente.idade_cliente());
+            }
+
+            clienteRepository.save(clienteEntidade);
+
+        }
+
+        return false;
+
+    }
+
+    public boolean deletarCliente(UUID idCliente) {
+
+        if (checarClienteExiste(idCliente)) {
+            clienteRepository.deleteById(idCliente);
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private boolean checarClienteExiste(UUID idCliente) {
+
+        return clienteRepository.existsById(idCliente);
     }
 
 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.bruno_pablo.imc.Dto.AtualizarFuncionarioDto;
 import br.bruno_pablo.imc.Dto.CalcularImcDto;
 import br.bruno_pablo.imc.Dto.CalcularImcResponse;
-import br.bruno_pablo.imc.Dto.CriarClienteDto;
+import br.bruno_pablo.imc.Dto.CriarOuAtualizarClienteDto;
 import br.bruno_pablo.imc.Dto.CriarOuListarFuncionarioDto;
 import br.bruno_pablo.imc.Dto.ListarFuncionarioResponse;
 import br.bruno_pablo.imc.service.FuncionarioService;
@@ -50,7 +50,7 @@ public class FuncionariosController {
     @PostMapping("/cadastrar_funcionario")
     public ResponseEntity<String> cadastrarFuncionario(@RequestBody CriarOuListarFuncionarioDto dados_funcionario) {
 
-        funcionarioService.criarFuncionario(dados_funcionario);
+        funcionarioService.cadastrarFuncionario(dados_funcionario);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Usuario Criado Com Sucesso: " + dados_funcionario.nome_funcionario());
@@ -58,9 +58,9 @@ public class FuncionariosController {
 
     @PostMapping("/{funcionarioId}/cadastrar_cliente")
     public ResponseEntity<String> cadastrarCliente(@PathVariable String funcionarioId,
-            @RequestBody CriarClienteDto dados_Cliente) {
+            @RequestBody CriarOuAtualizarClienteDto dados_Cliente) {
 
-        funcionarioService.criarCliente(funcionarioId, dados_Cliente);
+        funcionarioService.cadastrarCliente(funcionarioId, dados_Cliente);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Usuario Criado Com Sucesso: " + dados_Cliente.nome_cliente());
