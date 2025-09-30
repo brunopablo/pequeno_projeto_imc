@@ -56,7 +56,7 @@ public class ClientesController {
     public ResponseEntity<String> cadastrarImcCliente(@PathVariable String idCliente,
             @RequestBody InformacoesIniciaisImcDto informacoesImc) {
 
-        var clienteNome = informacoesImcService.inserirInformacoesImcCliente(idCliente, informacoesImc);
+        var clienteNome = informacoesImcService.cadastrarInformacoesImcCliente(idCliente, informacoesImc);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 "Informações IMC cadastradas no cliente: " + clienteNome);
@@ -81,7 +81,7 @@ public class ClientesController {
 
     }
 
-    @PutMapping("{idCliente}")
+    @PutMapping("/{idCliente}")
     public ResponseEntity<String> atualizarCliente(@PathVariable String idCliente, @RequestBody CriarOuAtualizarClienteDto novosDadosCliente) {
 
         String dadosInvalidos = checarDadosInvalidos.detectarNulos(novosDadosCliente);
